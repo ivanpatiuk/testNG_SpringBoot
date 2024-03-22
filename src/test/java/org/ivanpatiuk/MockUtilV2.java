@@ -19,15 +19,7 @@ public class MockUtilV2<T> {
     private T mock;
     private String beanName;
 
-    public static <T> MockUtilV2<T> spy(DefaultSingletonBeanRegistry registry, Class<T> spyType) {
-        return getInstance(registry, spyType, true);
-    }
-
-    public static <T> MockUtilV2<T> mock(DefaultSingletonBeanRegistry registry, Class<T> mockType) {
-        return getInstance(registry, mockType, false);
-    }
-
-    private static <T> MockUtilV2<T> getInstance(DefaultSingletonBeanRegistry registry, Class<T> mockType, boolean isSpy) {
+    public static <T> MockUtilV2<T> mock(DefaultSingletonBeanRegistry registry, Class<T> mockType, boolean isSpy) {
         final MockUtilV2<T> spyUtil = new MockUtilV2<>(registry);
         final String className = mockType.getSimpleName();
         spyUtil.mock = isSpy ? Mockito.mock(mockType, Answers.CALLS_REAL_METHODS) : Mockito.mock(mockType);
