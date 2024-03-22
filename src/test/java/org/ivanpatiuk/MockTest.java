@@ -1,6 +1,8 @@
 package org.ivanpatiuk;
 
 import io.restassured.response.Response;
+import lombok.Data;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +47,35 @@ public class MockTest extends AbstractTestNGSpringContextTests {
         String actual = repository.findUserById(1L).getEmail();
 
         Assert.assertEquals(actual, "hello");
+    }
+
+    @Data
+    static class NotificationMessage{
+        private String btnClicked;
+        private String[] notificationIds;
+    }
+
+    @Data
+    static class NotificationService{
+        public Long getMaxnotificationid(String[] arg){
+            return 1L;
+        }
+    }
+
+
+    @InjectMocks
+    private NotificationService service;
+
+    @Test
+    public void testAcknowledgement_AllNotifications() throws Exception {
+//        Service service = Mockito.mock();
+
+        // Mock NotificationMessage
+        NotificationMessage message = new NotificationMessage();
+        message.setBtnClicked("Acknowledge All Notifications");
+        message.setNotificationIds(new String[]{"10", "15"});
+
+        // Mock getMaxnotificationid method
+        Mockito.when(service.getMaxnotificationid(message.getNotificationIds())).thenReturn(15L);
     }
 }
